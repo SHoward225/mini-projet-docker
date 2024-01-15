@@ -7,7 +7,19 @@ This repo is a simple application to list student with a webserver (PHP) and API
 
 
 ------------
+## Author
 
+First name : Konan Junior Aime Stephane
+
+Surname : KOUADIO
+
+For Eazytraining 17th Bootcamp
+
+Period : January-February-March
+
+LinkedIn: [https://github.com/diranetafen/student-list.git "here"](https://www.linkedin.com/in/kouadio-konan-junior-aim%C3%A9-st%C3%A9phane/)
+
+email : [junior.kouadio21@inphb.ci](junior.kouadio21@inphb.ci)
 
 ## Objectives
 
