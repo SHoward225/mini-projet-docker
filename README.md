@@ -1,7 +1,9 @@
-# student-list 
+## student-list 
+
 This repo is a simple application to list student with a webserver (PHP) and API (Flask)
 
 ![project](https://user-images.githubusercontent.com/18481009/84582395-ba230b00-adeb-11ea-9453-22ed1be7e268.jpg)
+
 
 
 ------------
@@ -178,3 +180,9 @@ Your delivery will be evaluated on:
 Send your delivery at ***eazytrainingfr@gmail.com*** and we will provide you the link of the solution.
 
 ![good luck](https://user-images.githubusercontent.com/18481009/84582398-cad38100-adeb-11ea-95e3-2a9d4c0d5437.gif)
+
+----------------------------------------------------------------------------------------
+
+	# BUILD AND TEST
+
+
