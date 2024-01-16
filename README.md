@@ -27,16 +27,18 @@ I had to deploy an application named "*student_list*", which is very basic and e
 
 student_list application has two modules:
 
-- The first module is a REST API (with basic authentication needed) who send the desire list of the student based on JSON file
-- The second module is a web app written in HTML + PHP who enable end-user to get a list of students
+- Module 1: It's a REST API written in Flask (with basic authentication needed) who send the desire list of the student based on JSON file
+- Module 2 : Its's a web app written in HTML + PHP who enable end-user to get a list of students
 
 
 ## The need
 
 My work was to :
-1) build one container for each module
-2) make them interact with each other
-3) provide a private registry
+1) Write the Dockerfile of api
+2) Write the docker-compose
+3) build one container for each module
+4) make them interact with each other
+5) provide a private registry
 
 
 ## My plan
@@ -48,32 +50,39 @@ Then, I'll show you how I ***built*** and tested the architecture to justify my 
 Third and last part will be about to provide the ***deployment*** process I suggest for this application.
 
 
-### The files' role
+### 1) The files' role
 
-In my delivery you can find three main files : a ***Dockerfile***, a ***docker-compose.yml*** and a ***docker-compose.registry.yml***
+In my delivery you can find three main files : ***Dockerfile*** and ***docker-compose.yml***
 
-- docker-compose.yml: to launch the application (API and web app)
-- docker-compose.registry.yml: to launch the local registry and its frontend
-- simple_api/student_age.py: contains the source code of the API in python
-- simple_api/Dockerfile: to build the API image with the source code in it
-- simple_api/student_age.json: contains student name with age on JSON format
-- index.php: PHP  page where end-user will be connected to interact with the service to list students with their age.
+- docker-compose.yml:		to launch the application (API and web app)
+- simple_api/student_age.py:	contains the source code of the API in python
+- simple_api/Dockerfile: 	to build the API image with the source code in it
+- simple_api/student_age.json: 	contains student name with age on JSON format
+- index.php: 			PHP  page where end-user will be connected to interact with the service to list students with their age.
 
 
-## Build and test
+## 2) Build and test
 
-Considering you just have cloned this repository, you have to follow those steps to get the 'student_list' application ready :
+0) Clone the code:
 
-1) Change directory and build the api container image :
+```
+git clone https://github.com/diranetafen/student-list.git
+```
+1)  Change directory and edit of the Dockerfile for api with the instructions informations in `./simple_api/`
 
 ```bash
-cd ./mini-projet-docker/simple_api
+cd ./student-list/simple_api
+```
+ 
+2) Build the api container image :
+
+```bash
 docker build . -t api.student_list.img
 docker images
 ```
 > ![1-docker images](https://user-images.githubusercontent.com/101605739/224588377-b8afa11f-33b6-41ed-9f58-6e23d2054c83.jpg)
 
-2) Create a bridge-type network for the two containers to be able to contact each other by their names thanks to dns functions :
+3) Create a bridge-type network for the two containers to be able to contact each other by their names thanks to dns functions :
 
 ```bash
 docker network create student_list.network --driver=bridge
@@ -82,7 +91,7 @@ docker network ls
 > ![2-docker network ls](https://user-images.githubusercontent.com/101605739/224588523-a842cd26-c5d5-4338-8547-2e31578655c9.jpg)
 
 
-3) Move back to the root dir of the project and run the backend api container with those arguments :
+4) Move back to the root dir of the project and run the backend api container with those arguments :
 
 ```bash
 cd ..
@@ -100,7 +109,7 @@ I also had to mount the `./simple_api/` local directory in the `/data/` internal
 > ![4-./simple_api/:/data/](https://user-images.githubusercontent.com/101605739/224589839-7a5d47e6-fdff-40e4-a803-99ebc9d70b03.png)
 
 
-4) Update the `index.php` file :
+5) Update the `index.php` file :
 
 You need to update the following line before running the website container to make ***api_ip_or_name*** and ***port*** fit your deployment
    ` $url = 'http://<api_ip_or_name:port>/pozos/api/v1.0/get_student_ages';`
@@ -113,22 +122,22 @@ sed -i s\<api_ip_or_name:port>\api.student_list:5000\g ./website/index.php
 > ![5-api.student_list:5000](https://user-images.githubusercontent.com/101605739/224590958-49c2ce64-c9a0-4655-93da-552f27f78b2f.png)
 
 
-5) Run the frontend webapp container :
+6) Run the frontend webapp container :
 
 Username and password are provided in the source code `.simple_api/student_age.py`
 
 > ![6-id/passwd](https://user-images.githubusercontent.com/101605739/224590363-0fdd56ae-9fb9-45e7-8912-64a6789faa9e.png)
 
 ```bash
-docker run --rm -d --name=webapp.student_list -p 80:80 --network=student_list.network -v ./website/:/var/www/html -e USERNAME=toto -e PASSWORD=python php:apache
+docker run --rm -d --name=webapp.student_list -p 8081:80 --network=student_list.network -v ./website/:/var/www/html -e USERNAME=toto -e PASSWORD=python php:apache
 docker ps
 ```
 > ![7-docker ps](https://user-images.githubusercontent.com/101605739/224591443-344fd2cd-ddbc-4780-bbc5-7cc0bdac156f.jpg)
 
 
-6) Test the api through the frontend :
+7) Test the api through the frontend :
 
-6a) Using command line :
+7a) Using command line :
 
 The next command will ask the frontend container to request the backend api and show you the output back.
 The goal is to test both if the api works and if frontend can get the student list from it.
@@ -139,7 +148,7 @@ docker exec webapp.student_list curl -u toto:python -X GET http://api.student_li
 > ![8-docker exec](https://user-images.githubusercontent.com/101605739/224593842-23c7f3a5-e5bc-4840-a6af-2eda0f622710.png)
 
 
-6b) Using a web browser `IP:80` :
+7b) Using a web browser `IP:80` :
 
 - If you're running the app into a remote server or a virtual machine (e.g provisionned by eazytraining's vagrant file), please find your ip address typing `hostname -I`
 > ![9-hostname -I](https://user-images.githubusercontent.com/101605739/224594393-841a5544-7914-4b4f-91fd-90ce23200156.jpg)
@@ -168,9 +177,10 @@ docker ps
 > ![11-clean-up](https://user-images.githubusercontent.com/101605739/224595124-3ea15f42-e6d5-462a-92a0-52af7c73c17a.jpg)
 
 
+## 3) Infrastructure
 
 
-## Deployment
+## 4) Docker-registry and Deployment
 
 As the tests passed we can now 'composerize' our infrastructure by putting the `docker run` parameters in ***infrastructure as code*** format into a `docker-compose.yml` file.
 
