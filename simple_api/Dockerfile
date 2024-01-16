@@ -2,7 +2,7 @@
 FROM python:2.7-buster
 
 #Maintainer de l'image
-MAINTAINER howard225 (author)
+MAINTAINER howard225 (junior.kouadio21@inphb.ci
 
 #Installation des dependances
 RUN apt-get update && apt install python-dev python3-dev libsasl2-dev python-dev libldap2-dev libssl-dev -y 
