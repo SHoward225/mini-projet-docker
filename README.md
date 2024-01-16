@@ -41,16 +41,9 @@ My work was to :
 5) provide a private registry
 
 
-## My plan
+## Resolution of the problems
 
-First, let me introduce you the six ***files*** of this project and their role 
-
-Then, I'll show you how I ***built*** and tested the architecture to justify my choices
-
-Third and last part will be about to provide the ***deployment*** process I suggest for this application.
-
-
-### 1) The files' role
+### 0) The files' role
 
 In my delivery you can find three main files : ***Dockerfile*** and ***docker-compose.yml***
 
@@ -60,8 +53,7 @@ In my delivery you can find three main files : ***Dockerfile*** and ***docker-co
 - simple_api/student_age.json: 	contains student name with age on JSON format
 - index.php: 			PHP  page where end-user will be connected to interact with the service to list students with their age.
 
-
-## 2) Build and test
+### 2) Build and test
 
 0) Clone the code:
 
