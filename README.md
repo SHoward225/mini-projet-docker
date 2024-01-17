@@ -80,7 +80,7 @@ cd ./student-list/simple_api
 docker build . -t api.student_list.img
 docker images
 ```
-> ![1-docker images](https://user-images.githubusercontent.com/101605739/224588377-b8afa11f-33b6-41ed-9f58-6e23d2054c83.jpg)
+> ![1-docker images](https://github.com/SHoward225/mini-projet-docker/blob/master/assets/A.png)
 
 3) Create a bridge-type network for the two containers to be able to contact each other by their names thanks to dns functions :
 
