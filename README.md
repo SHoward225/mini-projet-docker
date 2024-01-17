@@ -21,17 +21,15 @@ LinkedIn: [https://www.linkedin.com/in/kouadio-konan-junior-aime-stephane/](http
 
 email : junior.kouadio21@inphb.ci
 
-## Application
+## Goals
 
-I had to deploy an application named "*student_list*", which is very basic and enables POZOS to show the list of some students with their age.
-
-student_list application has two modules:
+The goal of this project is to create et deploy some microservices with the source code given to containerize a student list application of 2 modules :
 
 - Module 1: It's a REST API written in Flask (with basic authentication needed) who send the desire list of the student based on JSON file
 - Module 2 : Its's a web app written in HTML + PHP who enable end-user to get a list of students
 
 
-## The need
+## The process
 
 My work was to :
 1) Write the Dockerfile of api
@@ -80,7 +78,7 @@ docker images
 docker network create student_list.network --driver=bridge
 docker network ls
 ```
-> ![2-docker network ls](https://user-images.githubusercontent.com/101605739/224588523-a842cd26-c5d5-4338-8547-2e31578655c9.jpg)
+> ![2-docker network ls](https://github.com/SHoward225/mini-projet-docker/blob/master/assets/B.png)
 
 
 4) Move back to the root dir of the project and run the backend api container with those arguments :
@@ -90,7 +88,7 @@ cd ..
 docker run --rm -d --name=api.student_list --network=student_list.network -v ./simple_api/:/data/ api.student_list.img
 docker ps
 ```
-> ![3-docker ps](https://user-images.githubusercontent.com/101605739/224589378-abcc3f7d-d5c6-4a81-ba28-767cb6cd7b7c.jpg)
+> ![3-docker ps](https://github.com/SHoward225/mini-projet-docker/blob/master/assets/C.png)
 
 As you can see, the api backend container is listening to the 5000 port.
 This internal port can be reached by another container from the same network so I chose not to expose it.
@@ -98,7 +96,7 @@ This internal port can be reached by another container from the same network so 
 I also had to mount the `./simple_api/` local directory in the `/data/` internal container directory so the api can use the `student_age.json` list 
 
 
-> ![4-./simple_api/:/data/](https://user-images.githubusercontent.com/101605739/224589839-7a5d47e6-fdff-40e4-a803-99ebc9d70b03.png)
+> ![4-./simple_api/:/data/](https://github.com/SHoward225/mini-projet-docker/blob/master/assets/D.png)
 
 
 5) Update the `index.php` file :
@@ -111,7 +109,7 @@ Thanks to our bridge-type network's dns functions, we can easyly use the api con
 ```bash
 sed -i s\<api_ip_or_name:port>\api.student_list:5000\g ./website/index.php
 ```
-> ![5-api.student_list:5000](https://user-images.githubusercontent.com/101605739/224590958-49c2ce64-c9a0-4655-93da-552f27f78b2f.png)
+> ![5-api.student_list:5000](https://github.com/SHoward225/mini-projet-docker/blob/master/assets/E.png)
 
 
 6) Run the frontend webapp container :
